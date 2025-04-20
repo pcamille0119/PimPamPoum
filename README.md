@@ -11,4 +11,7 @@ _Développeur web et web mobile :_
 - Guillaume
 
 ### Autres
+
+Fork du projet.
+Modification apporter après les retours.
 ...
