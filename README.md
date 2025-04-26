@@ -3,15 +3,13 @@
 
 ### Contributeurs
 _Développeur web et web mobile :_
-- Alexis
-- Océane
 - Patrick
-- Tyméo
-- Philippe
-- Guillaume
 
 ### Autres
-
 Fork du projet.
-Modification apporter après les retours.
-...
+Modification apporter après les retours des formateurs.
+
+### Etape 1
+Refonte graphique
+*Harmonisation des modules.
+*Gestion du module météo.
