@@ -11,5 +11,5 @@ Modification apporter après les retours des formateurs.
 
 ### Etape 1
 Refonte graphique
-*Harmonisation des modules.
-*Gestion du module météo.
+- Harmonisation des modules.
+- Gestion du module météo.

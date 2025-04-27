@@ -1,0 +1,52 @@
+
+body {
+    background-image: url('../../public/hero-main.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+
+/* Pop-up générale */
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenu de la pop-up */
+.popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    animation: popin 0.3s ease;
+}
+
+/* Animation d'apparition */
+@keyframes popin {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Petite amélioration bouton dans pop-up */
+.popup-content button {
+    width: 100%;
+}
+
+#toastMeteoWrapper {
+    cursor: move;
+    user-select: none;
+}
+
