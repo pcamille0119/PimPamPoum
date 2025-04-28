@@ -9,54 +9,18 @@ fetch('./liste-chambre.json')
     return response.json();
   })
   .then((data) => {
-    chambres = data; // Stocker les chambres dans la variable globale
-    console.log('Chambres chargées :', chambres);
+    chambres = data; // Stocker les chambres
   })
   .catch((error) => {
     console.error('Erreur :', error);
   });
 
-// Réservations simulées
+// Réservations existantes simulées
 const reservations = [
-    { chambre: "ME01", date_entree: "2024-11-25", date_sortie: "2024-11-27" },
-    { chambre: "ME02", date_entree: "2024-11-26", date_sortie: "2024-11-28" },
-    { chambre: "ME03", date_entree: "2024-11-30", date_sortie: "2024-12-02" },
-    { chambre: "ME04", date_entree: "2024-12-01", date_sortie: "2024-12-03" },
-    { chambre: "ME05", date_entree: "2024-11-30", date_sortie: "2024-12-01" },
-    { chambre: "ME01", date_entree: "2024-12-03", date_sortie: "2024-12-07" },
-    { chambre: "ME02", date_entree: "2024-12-05", date_sortie: "2024-12-08" },
-    { chambre: "ME03", date_entree: "2024-12-08", date_sortie: "2024-12-10" },
-    { chambre: "ME04", date_entree: "2024-12-09", date_sortie: "2024-12-12" },
-    { chambre: "ME05", date_entree: "2024-12-10", date_sortie: "2024-12-15" },
-    { chambre: "ME01", date_entree: "2024-12-15", date_sortie: "2024-12-20" },
-    { chambre: "ME02", date_entree: "2024-12-16", date_sortie: "2024-12-18" },
-    { chambre: "ME03", date_entree: "2024-12-20", date_sortie: "2024-12-26" },
-    { chambre: "ME04", date_entree: "2024-12-23", date_sortie: "2024-12-27" },
-    { chambre: "ME05", date_entree: "2024-12-24", date_sortie: "2024-12-28" },
-    { chambre: "JA01", date_entree: "2024-11-25", date_sortie: "2024-11-28" },
-    { chambre: "JA02", date_entree: "2024-11-30", date_sortie: "2024-12-01" },
-    { chambre: "JA03", date_entree: "2024-11-26", date_sortie: "2024-11-29" },
-    { chambre: "JA04", date_entree: "2024-11-27", date_sortie: "2024-11-30" },
-    { chambre: "JA05", date_entree: "2024-12-01", date_sortie: "2024-12-05" },
-    { chambre: "JA06", date_entree: "2024-12-02", date_sortie: "2024-12-07" },
-    { chambre: "JA07", date_entree: "2024-12-03", date_sortie: "2024-12-06" },
-    { chambre: "JA08", date_entree: "2024-12-06", date_sortie: "2024-12-10" },
-    { chambre: "JA09", date_entree: "2024-12-08", date_sortie: "2024-12-12" },
-    { chambre: "JA10", date_entree: "2024-12-09", date_sortie: "2024-12-13" },
-    { chambre: "JA01", date_entree: "2024-12-10", date_sortie: "2024-12-15" },
-    { chambre: "JA02", date_entree: "2024-12-12", date_sortie: "2024-12-16" },
-    { chambre: "JA03", date_entree: "2024-12-15", date_sortie: "2024-12-20" },
-    { chambre: "JA04", date_entree: "2024-12-16", date_sortie: "2024-12-21" },
-    { chambre: "JA05", date_entree: "2024-12-20", date_sortie: "2024-12-26" },
-    { chambre: "JA06", date_entree: "2024-12-22", date_sortie: "2024-12-27" },
-    { chambre: "JA07", date_entree: "2024-12-23", date_sortie: "2024-12-28" },
-    { chambre: "JA08", date_entree: "2024-12-26", date_sortie: "2024-12-30" },
-    { chambre: "JA09", date_entree: "2024-12-27", date_sortie: "2024-12-31" },
-    { chambre: "JA10", date_entree: "2024-12-28", date_sortie: "2025-01-02" },
-  ];
-  
+  // >>> Tes données de réservations simulées ici <<<
+];
 
-// Fonction pour vérifier la disponibilité des chambres
+// Vérification de disponibilité pour une chambre donnée
 function isAvailable(chambre, checkin, checkout) {
   return !reservations.some((resa) => {
     return (
@@ -66,37 +30,105 @@ function isAvailable(chambre, checkin, checkout) {
   });
 }
 
-// Écouter le bouton Rechercher
-document.getElementById("btn-recherche").addEventListener("click", () => {
+// Gérer la mise à jour de la liste des chambres disponibles
+function updateChambreSelect() {
   const checkin = document.getElementById("checkin-date").value;
   const checkout = document.getElementById("checkout-date").value;
   const guests = parseInt(document.getElementById("invités").value);
+  const chambreSelect = document.getElementById("chambre-select");
 
-  if (!checkin || !checkout) {
-    alert("Veuillez sélectionner des dates valides !");
+  chambreSelect.innerHTML = '<option value="">Sélectionnez une chambre</option>'; // reset
+
+  if (!checkin || !checkout || !guests) {
     return;
   }
 
-
-  // Filtrer les chambres disponibles
   const results = chambres.filter(
     (chambre) =>
       chambre.capacite >= guests && isAvailable(chambre.id, checkin, checkout)
   );
 
-  // Afficher les résultats
-  const resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = results.length
-    ? results
-        .map(
-          (chambre) =>
-            `<div class="card my-2">
-              <div class="card-body">
-                <h5 class="card-title">Chambre ${chambre.id} - Vue ${chambre.vue}</h5>
-                <p class="card-text">Capacité : ${chambre.capacite} personnes</p>
-              </div>
-            </div>`
-        )
-        .join("")
-    : "<p>Aucune chambre disponible pour cette période.</p>";
+  results.forEach(chambre => {
+    const option = document.createElement('option');
+    option.value = chambre.id;
+    option.textContent = `Chambre ${chambre.id} - ${chambre.vue} (Capacité ${chambre.capacite})`;
+    chambreSelect.appendChild(option);
+  });
+}
+
+// Mettre à jour la liste des chambres quand un champ change
+["checkin-date", "checkout-date", "invités"].forEach(id => {
+  document.getElementById(id).addEventListener("change", updateChambreSelect);
 });
+
+// Gérer la soumission du formulaire
+document.getElementById("reservation-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const checkin = document.getElementById("checkin-date").value;
+  const checkout = document.getElementById("checkout-date").value;
+  const guests = document.getElementById("invités").value;
+  const chambreId = document.getElementById("chambre-select").value;
+
+  if (!checkin || !checkout || !guests || !chambreId) {
+    alert("Veuillez remplir tous les champs correctement.");
+    return;
+  }
+
+  // Retrouver les infos de la chambre sélectionnée
+  const chambreData = chambres.find(chambre => chambre.id === chambreId);
+
+  showConfirmationPopup(chambreData, checkin, checkout, guests);
+});
+
+// Fonction pour afficher la pop-up de confirmation
+function showConfirmationPopup(chambreData, checkin, checkout, guests) {
+  const popupContainer = document.getElementById('popup-container');
+
+  popupContainer.innerHTML = `
+    <div class="popup-content p-4 border rounded bg-white">
+      <h4 class="mb-3">Confirmez votre réservation :</h4>
+      <p><strong>Chambre :</strong> ${chambreData.id}</p>
+      <p><strong>Vue :</strong> ${chambreData.vue}</p>
+      <p><strong>Capacité :</strong> ${chambreData.capacite} personnes</p>
+      <p><strong>Date d'arrivée :</strong> ${checkin}</p>
+      <p><strong>Date de départ :</strong> ${checkout}</p>
+      <p><strong>Nombre d'invités :</strong> ${guests}</p>
+      <button class="btn btn-success mt-3" id="confirm-btn">Confirmer la réservation</button>
+    </div>
+  `;
+
+  popupContainer.classList.remove('d-none');
+
+  document.getElementById('confirm-btn').addEventListener('click', () => confirmReservation(chambreData.id));
+}
+
+// Fonction pour confirmer la réservation
+function confirmReservation(chambreId) {
+  const now = new Date();
+  const year = now.getFullYear().toString().slice(-2);
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const serial = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+
+  // Numéro de réservation pour chambre (préfixe CH)
+  const numeroReservation = `CH${year}${month}${serial}`;
+
+  // Stocker dans localStorage
+  const reservationsStored = JSON.parse(localStorage.getItem('reservations_chambres')) || [];
+  reservationsStored.push({
+    numero: numeroReservation,
+    chambre: chambreId
+  });
+  localStorage.setItem('reservations_chambres', JSON.stringify(reservationsStored));
+
+  // Affichage pop-up de succès
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.innerHTML = `
+    <div class="popup-content p-4 border rounded bg-white text-center">
+      <h4 class="mb-3">Réservation réussie !</h4>
+      <p>Votre numéro de réservation est :</p>
+      <h3 class="text-primary">${numeroReservation}</h3>
+      <button class="btn btn-primary mt-3" onclick="location.reload()">Fermer</button>
+    </div>
+  `;
+}
