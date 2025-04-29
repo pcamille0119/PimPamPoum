@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const checkinInput = document.getElementById('checkin-date');
     const meteoContent = document.getElementById('meteoBlocContent');
-    const apiKey = 'ba1b793ecb984252a29120525252904'; // Remplace par ta vraie clé API si besoin
-    const location = 'Nouméa'; // Peut être adapté selon ta zone géographique
+    const apiKey = 'ba1b793ecb984252a29120525252904';
+    const location = 'Nouméa'; 
 
     const today = new Date();
     const year = today.getFullYear();

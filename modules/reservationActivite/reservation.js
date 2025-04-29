@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let reservationChambreTrouvee = null; // Permet de savoir si une réservation est trouvée
     boutonReserver.disabled = true;
 
-    // 🔵 Forcer majuscules sur numéro de réservation
+    // Forcer majuscules sur numéro de réservation
     numeroChambreInput.addEventListener('input', () => {
         numeroChambreInput.value = numeroChambreInput.value.toUpperCase();
     });
 
-    // 🔵 Vérification du numéro de réservation
+    // Vérification du numéro de réservation
     numeroChambreInput.addEventListener('blur', () => {
         const reservations = JSON.parse(localStorage.getItem('reservations_chambres')) || [];
         const numeroSaisi = numeroChambreInput.value.trim();
@@ -47,14 +47,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 🔵 Mise à jour dynamique des créneaux selon l'activité choisie
+    // Mise à jour dynamique des créneaux selon l'activité choisie
     activiteSelect.addEventListener('change', () => {
         const selectedActivity = activiteSelect.value;
         updateCreneaux(selectedActivity);
         updateParticipantsField(selectedActivity);
     });
 
-    // 🔵 Soumission du formulaire
+    // Soumission du formulaire
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="2">2 enfants</option>
                 <option value="3">3 enfants</option>
             `;
-        } else if (activity === "repas") { 
+        } else if (activity === "repas") {
             participantsLabel.textContent = "Réservez une table";
             participantsSelect.innerHTML = `
                 <option value="" disabled selected hidden>Réservez une table pour...</option>
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
     }
-    
+
 
     function showConfirmationPopup() {
         const numeroChambre = numeroChambreInput.value;
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const rawDate = document.getElementById('date').value;
         const participants = participantsSelect.options[participantsSelect.selectedIndex].text;
         const creneau = creneauSelect.options[creneauSelect.selectedIndex].text;
-    
+
         const dateObj = new Date(rawDate);
         const formattedDate = dateObj.toLocaleDateString('fr-FR', {
             weekday: 'long',
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             month: 'long',
             day: 'numeric'
         });
-    
+
         const popupHtml = `
             <div class="popup-content text-start" id="popup-inner">
                 <h4 class="mb-3">Confirmez votre réservation :</h4>
@@ -151,20 +151,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
-    
+
         const popupContainer = document.getElementById('popup-container');
         popupContainer.innerHTML = popupHtml;
         popupContainer.classList.remove('d-none');
-    
+
         // Bouton confirmation
         document.getElementById('confirm-btn').addEventListener('click', confirmReservation);
-    
+
         // Bouton annuler
         document.getElementById('cancel-btn').addEventListener('click', () => {
             popupContainer.classList.add('d-none');
             popupContainer.innerHTML = '';
         });
-    
+
         // Fermeture si on clique à l'extérieur
         popupContainer.addEventListener('click', (e) => {
             const isClickInside = e.target.closest('#popup-inner');
@@ -201,10 +201,10 @@ document.addEventListener("DOMContentLoaded", () => {
         form.reset();
 
         // Remettre le champ participants par défaut
-         updateParticipantsField("");
+        updateParticipantsField("");
 
         // Remettre le champ créneau vide
-         creneauSelect.innerHTML = '<option value="">Sélectionnez un créneau</option>';
+        creneauSelect.innerHTML = '<option value="">Sélectionnez un créneau</option>';
 
         // Affichage pop-up succès
         const popupContainer = document.getElementById('popup-container');

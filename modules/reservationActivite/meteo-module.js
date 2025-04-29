@@ -13,7 +13,7 @@
             dateInput.min = formattedToday;
             dateInput.value = formattedToday;
         
-            // ➡️ Météo affichée automatiquement au chargement de la page pour aujourd'hui
+            // Météo affichée automatiquement au chargement de la page pour aujourd'hui
             updateMeteo(formattedToday);
         
             async function updateMeteo(selectedDate) {
