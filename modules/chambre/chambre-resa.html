@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="./chambre.css">
+    <link rel="stylesheet" href="./resaChambre.css">
     <link rel="icon" type="image/x-icon" href="../../public/logo.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="../../js/navbar.js" defer></script>
@@ -17,75 +18,75 @@
     <!-- Menu -->
     <menu-top></menu-top>
 
-    <!-- Hero Section -->
-    <section class="hero bg-image p-5 mt-0"
-    style="background-image: url('./galerie/Hero-02.jpg'); background-size: cover; background-position: center;">
-    <div class="container py-4 mt-5">
-        <form id="reservation-form" class="row align-items-center justify-content-between bg-secondary p-3 rounded">
-            <!-- Sélection des dates -->
-            <div class="col-lg-3 col-md-6">
-                <label class="form-label fw-bold text-white">Date d'arrivée</label>
-                <input type="date" id="checkin-date" class="form-control" required>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <label class="form-label fw-bold text-white">Date de départ</label>
-                <input type="date" id="checkout-date" class="form-control" required>
-            </div>
-
-            <!-- Nombre d'invités -->
-            <div class="col-lg-2 col-md-6">
-                <label class="form-label fw-bold text-white">Nombre d'invités</label>
-                <select id="invités" class="form-select" required>
+    <!-- Section principale -->
+    <section class="container mt-5 mb-5">
+        <h2 class="text-center mb-4">Réservez votre chambre</h2>
+      
+        <!-- Bloc formulaire seul -->
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <form id="reservation-form" class="p-4 border rounded bg-light">
+              <div class="row">
+                <!-- Dates -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold">Date d'arrivée</label>
+                  <input type="date" id="checkin-date" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label fw-bold">Date de départ</label>
+                  <input type="date" id="checkout-date" class="form-control" required>
+                </div>
+      
+                <!-- Invités -->
+                <div class="col-md-12 mb-3">
+                  <label class="form-label fw-bold">Nombre d'invités</label>
+                  <select id="invités" class="form-select" required>
                     <option value="">Sélectionnez</option>
                     <option value="1">1 personne</option>
                     <option value="2">2 personnes</option>
                     <option value="3">3 personnes</option>
                     <option value="4">4 personnes</option>
-                </select>
+                  </select>
+                </div>
+              </div>
+      
+              <!-- Liste des chambres -->
+              <div class="col-12 mt-4">
+                <h5 class="mb-3">Chambres disponibles</h5>
+                <div id="chambre-liste" class="chambre-grid scrollable-grid">
+                  <!-- Chambres injectées dynamiquement -->
+                </div>
+              </div>
+      
+              <!-- Bouton -->
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Réservez</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      
+        <!-- Bloc météo placé en bas -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-lg-10">
+            <div id="meteoBloc" class="p-4 border rounded bg-white">
+              <div id="meteoBlocContent" class="text-center">
+                <p class="text-muted">Sélectionnez une date d'arrivée pour voir la météo ☀️</p>
+              </div>
             </div>
-
-            <!-- Sélection de la chambre -->
-            <div class="col-lg-2 col-md-6">
-                <label class="form-label fw-bold text-white">Chambre disponible</label>
-                <select id="chambre-select" class="form-select" required>
-                    <option value="">Sélectionnez une chambre</option>
-                </select>
-            </div>
-
-            <!-- Bouton Réserver -->
-            <div class="col-lg-2 d-flex align-items-end mt-2">
-                <button type="submit" class="btn btn-primary w-100">Réserver</button>
-            </div>
-        </form>
-    </div>
-</section>
+          </div>
+        </div>
+      </section>
+      
+    <!-- Pop-up dynamique -->
+    <div id="popup-container" class="popup-container d-none"></div>
 
     <!-- Pied de page -->
     <pied-de-page></pied-de-page>
 
-    <!-- Toast Météo -->
-    <div id="toastMeteoWrapper" class="toast-container position-fixed p-3" style="top: 20%; left: 70%;">
-        <div id="meteoToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header d-flex justify-content-between align-items-center">
-                <strong class="me-auto">Météo</strong>
-                <div>
-                    <button type="button" class="btn btn-sm btn-secondary me-1" id="toggle-toast">-</button>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Fermer"></button>
-                </div>
-            </div>
-            <div class="toast-body">
-                <!-- Contenu météo dynamique -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Pop-up dynamique -->
-    <div id="popup-container" class="popup-container d-none"></div>
-
     <!-- Scripts -->
-    <script src="../reservationActivite/meteo-module.js" defer></script>
-    <script src="../reservationActivite/toastMeteo.js" defer></script>
     <script src="./chambre.js" defer></script>
+    <script src="./meteo-chambre.js" defer></script> <!-- Nouveau fichier météo spécifique -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
