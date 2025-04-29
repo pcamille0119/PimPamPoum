@@ -59,3 +59,18 @@ body {
         margin-top: 20px;
     }
 }
+
+@media (max-width: 576px) {
+    .popup-content {
+      width: 90%;
+      padding: 1.5rem;
+    }
+
+    .popup-content {
+        max-width: 90vw;
+        min-width: 300px;
+    }
+    
+  }
+
+
