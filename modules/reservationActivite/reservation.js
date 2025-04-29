@@ -4,18 +4,67 @@ document.addEventListener("DOMContentLoaded", () => {
     const participantsLabel = document.getElementById('participants-label');
     const participantsSelect = document.getElementById('participants');
     const creneauSelect = document.getElementById('creneau');
+    const boutonReserver = form.querySelector('button[type="submit"]');
     const numeroChambreInput = document.getElementById('numero-chambre');
+    const dateInput = document.getElementById('date');
 
-    // Forcer les majuscules sur numéro de chambre
+    let reservationChambreTrouvee = null; // Permet de savoir si une réservation est trouvée
+    boutonReserver.disabled = true;
+
+    // 🔵 Forcer majuscules sur numéro de réservation
     numeroChambreInput.addEventListener('input', () => {
         numeroChambreInput.value = numeroChambreInput.value.toUpperCase();
     });
 
-    // Mise à jour dynamique du formulaire selon activité choisie
+    // 🔵 Vérification du numéro de réservation
+    numeroChambreInput.addEventListener('blur', () => {
+        const reservations = JSON.parse(localStorage.getItem('reservations_chambres')) || [];
+        const numeroSaisi = numeroChambreInput.value.trim();
+
+        reservationChambreTrouvee = reservations.find(resa => resa.numero === numeroSaisi);
+
+        if (reservationChambreTrouvee) {
+            // Si numéro trouvé, on adapte le champ date
+            dateInput.disabled = false;
+            dateInput.min = reservationChambreTrouvee.date_entree;
+            dateInput.max = reservationChambreTrouvee.date_sortie;
+            dateInput.value = reservationChambreTrouvee.date_entree; // auto sélectionner la première date
+
+            activiteSelect.disabled = false;
+            participantsLabel.disabled = false;
+            participantsSelect.disabled = false;
+            creneauSelect.disabled = false;
+            boutonReserver.disabled = false; // ✅ activer le bouton
+        } else {
+            alert('Erreur : Numéro de réservation de chambre invalide.');
+            dateInput.disabled = true;
+            dateInput.value = '';
+            activiteSelect.disabled = true;
+            participantsLabel.disabled = true;
+            participantsSelect.disabled = true;
+            creneauSelect.disabled = true;
+            boutonReserver.disabled = true; // ❌ désactiver le bouton
+        }
+    });
+
+    // 🔵 Mise à jour dynamique des créneaux selon l'activité choisie
     activiteSelect.addEventListener('change', () => {
         const selectedActivity = activiteSelect.value;
         updateCreneaux(selectedActivity);
         updateParticipantsField(selectedActivity);
+    });
+
+    // 🔵 Soumission du formulaire
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Vérifier si le numéro est correct
+        if (!reservationChambreTrouvee) {
+            alert("Veuillez entrer un numéro de réservation de chambre valide pour continuer.");
+            return;
+        }
+
+        showConfirmationPopup();
     });
 
     // Gestion du formulaire
