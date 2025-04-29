@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             garderie: ["Matin (7h-12h)", "Après-midi (13h-14h)", "Journée complète (7h-16h)"]
         };
 
-        creneauSelect.innerHTML = '<option value="">Sélectionnez un créneau</option>';
+        creneauSelect.innerHTML = '<option value="" disabled selected hidden>Sélectionnez un créneau</option>';
         options[activity]?.forEach(creneau => {
             const option = document.createElement('option');
             option.value = creneau;
@@ -46,15 +46,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (activity === "garderie") {
             participantsLabel.textContent = "Nombre d'enfants";
             participantsSelect.innerHTML = `
-                <option value="">Sélectionnez</option>
+                <option value="" disabled selected hidden>Sélectionnez</option>
                 <option value="1">1 enfant</option>
                 <option value="2">2 enfants</option>
                 <option value="3">3 enfants</option>
             `;
+        } else if (activity === "repas") { 
+            participantsLabel.textContent = "Réservez une table";
+            participantsSelect.innerHTML = `
+                <option value="" disabled selected hidden>Réservez une table pour...</option>
+                <option value="1">1 personne</option>
+                <option value="2">2 personnes</option>
+                <option value="3">3 personnes</option>
+                <option value="4">4 personnes</option>
+            `;
         } else {
             participantsLabel.textContent = "Nombre de participants";
             participantsSelect.innerHTML = `
-                <option value="">Sélectionnez</option>
+                <option value="" disabled selected hidden>Sélectionnez le nombre de participants</option>
                 <option value="1">1 participant</option>
                 <option value="2">2 participants</option>
                 <option value="3">3 participants</option>
@@ -62,32 +71,59 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }
     }
+    
 
     function showConfirmationPopup() {
         const numeroChambre = numeroChambreInput.value;
         const activite = activiteSelect.options[activiteSelect.selectedIndex].text;
-        const date = document.getElementById('date').value;
+        const rawDate = document.getElementById('date').value;
         const participants = participantsSelect.options[participantsSelect.selectedIndex].text;
         const creneau = creneauSelect.options[creneauSelect.selectedIndex].text;
-
-        // Pop-up HTML
+    
+        const dateObj = new Date(rawDate);
+        const formattedDate = dateObj.toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    
         const popupHtml = `
-            <div class="popup-content p-4 border rounded bg-white">
+            <div class="popup-content text-start" id="popup-inner">
                 <h4 class="mb-3">Confirmez votre réservation :</h4>
                 <p><strong>Numéro de chambre :</strong> ${numeroChambre}</p>
                 <p><strong>Activité :</strong> ${activite}</p>
-                <p><strong>Date :</strong> ${date}</p>
+                <p><strong>Date :</strong> ${formattedDate}</p>
                 <p><strong>Nombre :</strong> ${participants}</p>
                 <p><strong>Créneau :</strong> ${creneau}</p>
-                <button class="btn btn-success mt-3" id="confirm-btn">Confirmer la réservation</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <button class="btn btn-secondary" id="cancel-btn">Annuler</button>
+                    <button class="btn btn-success" id="confirm-btn">Confirmer la réservation</button>
+                </div>
             </div>
         `;
-
+    
         const popupContainer = document.getElementById('popup-container');
         popupContainer.innerHTML = popupHtml;
         popupContainer.classList.remove('d-none');
-
+    
+        // Bouton confirmation
         document.getElementById('confirm-btn').addEventListener('click', confirmReservation);
+    
+        // Bouton annuler
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            popupContainer.classList.add('d-none');
+            popupContainer.innerHTML = '';
+        });
+    
+        // Fermeture si on clique à l'extérieur
+        popupContainer.addEventListener('click', (e) => {
+            const isClickInside = e.target.closest('#popup-inner');
+            if (!isClickInside) {
+                popupContainer.classList.add('d-none');
+                popupContainer.innerHTML = '';
+            }
+        });
     }
 
     function confirmReservation() {
@@ -126,8 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
         popupContainer.innerHTML = `
             <div class="popup-content p-4 border rounded bg-white text-center">
                 <h4 class="mb-3">Réservation réussie !</h4>
-                <p>Votre numéro de réservation est :</p>
+                <p>Votre numéro de réservation est le:</p>
                 <h3 class="text-primary">${numeroReservation}</h3>
+                <p>Il sera à présenter sur place. </p>
                 <button class="btn btn-primary mt-3" onclick="location.reload()">Fermer</button>
             </div>
         `;
