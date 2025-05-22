@@ -1,9 +1,9 @@
 class NavBar extends HTMLElement {
-	constructor() {
-		super();
-	}
-	connectedCallback() {
-		this.innerHTML = `
+  constructor() {
+    super();
+  }
+  connectedCallback() {
+    this.innerHTML = `
 			<nav class="navbar navbar-dark navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="./index.html">
@@ -34,11 +34,17 @@ class NavBar extends HTMLElement {
         </li>
       </ul>
     </div>
+    <!-- Bouton Connexion -->
+		<div class="d-flex ms-auto">
+			  <a href="./modules/connexion/connexion.html" class="btn btn-outline-light">
+					 Connexion
+					</a>
+		</div>
   </div>
 </nav>
 
 		`;
-	}
+  }
 }
 
 // Enregistrement de la balise personnalisée
